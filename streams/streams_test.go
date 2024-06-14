@@ -29,12 +29,12 @@ func TestMap(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ys := Map(tt.xs, tt.mapFunc)
 			if len(ys) != len(tt.want) {
-				t.Errorf("len(ys) = %v, got %v", len(ys), len(tt.want))
+				t.Errorf("len(ys) = %v, expected %v", len(ys), len(tt.want))
 			}
 
 			for i := range len(ys) {
 				if ys[i] != tt.want[i] {
-					t.Errorf("ys[%v] = %v, got %v", i, ys[i], tt.want[i])
+					t.Errorf("ys[%v] = %v, expected %v", i, ys[i], tt.want[i])
 				}
 			}
 		})
