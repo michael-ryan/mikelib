@@ -4,24 +4,30 @@ import (
 	"testing"
 )
 
-func TestMapDoubles(t *testing.T) {
+func TestMap(t *testing.T) {
 	var tests = []struct {
-		xs   []int
-		want []int
-		name string
+		xs      []int
+		want    []int
+		mapFunc func(int) int
+		name    string
 	}{
 		{
-			xs:   []int{1, 2, 3, 4, 5},
-			want: []int{2, 4, 6, 8, 10},
-			name: "1..5",
+			xs:      []int{1, 2, 3, 4, 5},
+			want:    []int{2, 4, 6, 8, 10},
+			mapFunc: func(i int) int { return 2 * i },
+			name:    "1..5 double",
+		},
+		{
+			xs:      []int{3, 2, 1},
+			want:    []int{0, -1, -2},
+			mapFunc: func(i int) int { return i - 3 },
+			name:    "3..1 -3",
 		},
 	}
 
-	doubleFunc := func(x int) int { return 2 * x }
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ys := Map(tt.xs, doubleFunc)
+			ys := Map(tt.xs, tt.mapFunc)
 			if len(ys) != len(tt.want) {
 				t.Errorf("len(ys) = %v, got %v", len(ys), len(tt.want))
 			}
