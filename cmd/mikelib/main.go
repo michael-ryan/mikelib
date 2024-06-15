@@ -1,8 +1,13 @@
 package main
 
-import "michael/trash/pkg/vec"
+import (
+	"fmt"
+	"michael/trash/pkg/vec"
+)
 
 func main() {
-	a := vec.NewVec2(1, 3)
-	println(a.Dot(vec.NewVec2(-1, 4)))
+	a := vec.NewVec3(1, 2, 3)
+	b := vec.NewVec3(4, 5, 6)
+
+	fmt.Println(a.Cross(b))
 }
