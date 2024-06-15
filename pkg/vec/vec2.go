@@ -52,7 +52,7 @@ func (v1 vec2[T]) Dot(v2 vec2[T]) T {
 	return v1.X*v2.X + v1.Y*v2.Y
 }
 
-// Divide returns this vector multiplied by a scalar value.
+// Multiply returns this vector multiplied by a scalar value.
 func (v vec2[T]) Multiply(n T) vec2[T] {
 	return NewVec2(
 		v.X*n,
@@ -115,7 +115,7 @@ func (v1 vec2[T]) Angle(v2 vec2[T]) (float64, error) {
 //
 // No safeguards are in place for vales of t that do not satisfy 0 <= t <= 1.
 // Instead, this will extrapolate beyond v1 or v2. For example, values of t > 1 will be in the direction of
-// (v2 - v1). t = -2 will result in a vector equal to v1 * 3 + v2 * -2
+// (v2 - v1). t = -2 will result in a vector equal to v1 * 3 + v2 * -2.
 func (v1 vec2[T]) Lerp(v2 vec2[T], t float64) vec2[float64] {
 	return NewVec2(
 		float64(v1.X)+t*float64(v2.X-v1.X),
