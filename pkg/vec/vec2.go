@@ -102,9 +102,32 @@ func (v1 Vec2) Angle(v2 Vec2) (float64, error) {
 // No safeguards are in place for vales of t that do not satisfy 0 <= t <= 1.
 // Instead, this will extrapolate beyond v1 or v2. For example, values of t > 1 will be in the direction of
 // (v2 - v1). t = -2 will result in a vector equal to v1 * 3 + v2 * -2.
+//
+// If you wish to have the result clamped between v1 and v2, use [LerpClamped].
 func (v1 Vec2) Lerp(v2 Vec2, t float64) Vec2 {
 	return NewVec2(
 		v1.X+t*(v2.X-v1.X),
 		v1.Y+t*(v2.Y-v1.Y),
 	)
+}
+
+// LerpClamped linearly interpolates between v1 and v2 by factor t, clamping the result between v1 and v2.
+//
+// Mathematically, this computes v1 * (1 - t) + v2 * t for 0 <= t <= 1.
+//
+// At t <= 0, the result of this function is equal to v1.
+//
+// At t >= 1, the result of this function is equal to v2.
+func (v1 Vec2) LerpClamped(v2 Vec2, t float64) Vec2 {
+	var t_clamped float64
+
+	if t < 0 {
+		t_clamped = 0
+	} else if t > 1 {
+		t_clamped = 1
+	} else {
+		t_clamped = t
+	}
+
+	return v1.Lerp(v2, t_clamped)
 }
