@@ -5,21 +5,16 @@ import (
 	"math"
 )
 
-// vec3 represents a vector in 3D space.
+// Vec3 represents a vector in 3D space.
 // Many receivers are provided - note these are value receivers,
-// and therefore never modify the vec3 being operated upon.
-//
-// vec3s may hold any float or integer type, but note that you may only operate on like-for-like.
-// That is to say, for example, you may only multiply a vec3[float64] with another vec3[float64].
-//
-// It is recommended that you choose one underlying numeric type, and stick to it.
-type vec3[T number] struct {
-	X, Y, Z T
+// and therefore never modify the Vec3 being operated upon.
+type Vec3 struct {
+	X, Y, Z float64
 }
 
 // NewVec3 returns a new 3D vector.
-func NewVec3[T number](x T, y T, z T) vec3[T] {
-	return vec3[T]{
+func NewVec3(x, y, z float64) Vec3 {
+	return Vec3{
 		X: x,
 		Y: y,
 		Z: z,
@@ -27,7 +22,7 @@ func NewVec3[T number](x T, y T, z T) vec3[T] {
 }
 
 // Add computes v1 + v2.
-func (v1 vec3[T]) Add(v2 vec3[T]) vec3[T] {
+func (v1 Vec3) Add(v2 Vec3) Vec3 {
 	return NewVec3(
 		v1.X+v2.X,
 		v1.Y+v2.Y,
@@ -36,7 +31,7 @@ func (v1 vec3[T]) Add(v2 vec3[T]) vec3[T] {
 }
 
 // Subtract computes v1 - v2.
-func (v1 vec3[T]) Subtract(v2 vec3[T]) vec3[T] {
+func (v1 Vec3) Subtract(v2 Vec3) Vec3 {
 	return NewVec3(
 		v1.X-v2.X,
 		v1.Y-v2.Y,
@@ -45,12 +40,12 @@ func (v1 vec3[T]) Subtract(v2 vec3[T]) vec3[T] {
 }
 
 // Dot computes the dot product between v1 and v2.
-func (v1 vec3[T]) Dot(v2 vec3[T]) T {
+func (v1 Vec3) Dot(v2 Vec3) float64 {
 	return v1.X*v2.X + v1.Y*v2.Y + v1.Z*v2.Z
 }
 
 // Multiply returns this vector multiplied by a scalar value.
-func (v vec3[T]) Multiply(n T) vec3[T] {
+func (v Vec3) Multiply(n float64) Vec3 {
 	return NewVec3(
 		v.X*n,
 		v.Y*n,
@@ -59,7 +54,7 @@ func (v vec3[T]) Multiply(n T) vec3[T] {
 }
 
 // Divide returns this vector divided by a scalar value.
-func (v vec3[T]) Divide(n T) vec3[T] {
+func (v Vec3) Divide(n float64) Vec3 {
 	return NewVec3(
 		v.X/n,
 		v.Y/n,
@@ -68,32 +63,29 @@ func (v vec3[T]) Divide(n T) vec3[T] {
 }
 
 // Magnitude returns the length of this vector.
-func (v vec3[T]) Magnitude() float64 {
-	x := float64(v.X)
-	y := float64(v.Y)
-	z := float64(v.Z)
-	return math.Sqrt(x*x + y*y + z*z)
+func (v Vec3) Magnitude() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y + v.Z*v.Z)
 }
 
 // Normalised returns the vector in the same direction as this vector with a length of 1.
 //
 // Since a 0-length array has no direction, if |v| = 0 then this function will return an error.
-func (v vec3[T]) Normalised() (vec3[float64], error) {
+func (v Vec3) Normalised() (Vec3, error) {
 	magnitude := v.Magnitude()
 
 	if magnitude == 0 {
-		return vec3[float64]{}, errors.New("tried to normalise a 0-length vector")
+		return Vec3{}, errors.New("tried to normalise a 0-length vector")
 	}
 
 	return NewVec3(
-		float64(v.X)/magnitude,
-		float64(v.Y)/magnitude,
-		float64(v.Z)/magnitude,
+		v.X/magnitude,
+		v.Y/magnitude,
+		v.Z/magnitude,
 	), nil
 }
 
 // Angle computes the angle between v1 and v2, in radians.
-func (v1 vec3[T]) Angle(v2 vec3[T]) (float64, error) {
+func (v1 Vec3) Angle(v2 Vec3) (float64, error) {
 	if v1.Magnitude() == 0 {
 		return 0, errors.New("v1 length is 0, cannot compute angle")
 	}
@@ -102,11 +94,10 @@ func (v1 vec3[T]) Angle(v2 vec3[T]) (float64, error) {
 		return 0, errors.New("v2 length is 0, cannot compute angle")
 	}
 
-	return math.Acos(float64(v1.Dot(v2)) / (v1.Magnitude() * v2.Magnitude())), nil
+	return math.Acos(v1.Dot(v2) / (v1.Magnitude() * v2.Magnitude())), nil
 }
 
 // Lerp linearly interpolates between v1 and v2 by factor t.
-// Note that this function will always return a vec2[float64].
 //
 // Mathematically, this computes v1 * (1 - t) + v2 * t.
 //
@@ -117,15 +108,39 @@ func (v1 vec3[T]) Angle(v2 vec3[T]) (float64, error) {
 // No safeguards are in place for vales of t that do not satisfy 0 <= t <= 1.
 // Instead, this will extrapolate beyond v1 or v2. For example, values of t > 1 will be in the direction of
 // (v2 - v1). t = -2 will result in a vector equal to v1 * 3 + v2 * -2.
-func (v1 vec3[T]) Lerp(v2 vec3[T], t float64) vec3[float64] {
+//
+// If you wish to have the result clamped between v1 and v2, use [LerpClamped].
+func (v1 Vec3) Lerp(v2 Vec3, t float64) Vec3 {
 	return NewVec3(
-		float64(v1.X)+t*float64(v2.X-v1.X),
-		float64(v1.Y)+t*float64(v2.Y-v1.Y),
-		float64(v1.Z)+t*float64(v2.Z-v1.Z),
+		v1.X+t*(v2.X-v1.X),
+		v1.Y+t*(v2.Y-v1.Y),
+		v1.Z+t*(v2.Z-v1.Z),
 	)
 }
 
-func (v1 vec3[T]) Cross(v2 vec3[T]) vec3[T] {
+// LerpClamped linearly interpolates between v1 and v2 by factor t, clamping the result between v1 and v2.
+//
+// Mathematically, this computes v1 * (1 - t) + v2 * t for 0 <= t <= 1.
+//
+// At t <= 0, the result of this function is equal to v1.
+//
+// At t >= 1, the result of this function is equal to v2.
+func (v1 Vec3) LerpClamped(v2 Vec3, t float64) Vec3 {
+	var t_clamped float64
+
+	if t < 0 {
+		t_clamped = 0
+	} else if t > 1 {
+		t_clamped = 1
+	} else {
+		t_clamped = t
+	}
+
+	return v1.Lerp(v2, t_clamped)
+}
+
+// Cross returns the cross product of v1 and v2.
+func (v1 Vec3) Cross(v2 Vec3) Vec3 {
 	return NewVec3(
 		v1.Y*v2.Z-v1.Z*v2.Y,
 		v1.Z*v2.X-v1.X*v2.Z,
