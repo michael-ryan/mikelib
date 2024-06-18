@@ -147,3 +147,13 @@ func (v1 Vec3) Cross(v2 Vec3) Vec3 {
 		v1.X*v2.Y-v1.Y*v2.X,
 	)
 }
+
+// Equals returns true if the two vectors are equal.
+func (v1 Vec3) Equals(v2 Vec3) bool {
+	return v1.X == v2.X && v1.Y == v2.Y && v1.Z == v2.Z
+}
+
+// AlmostEqual returns true if the two vectors are almost equal, within some tolerance threshold.
+func (v1 Vec3) AlmostEqual(v2 Vec3, threshold float64) bool {
+	return math.Abs(v1.X-v2.X) <= threshold && math.Abs(v1.Y-v2.Y) <= threshold && math.Abs(v1.Z-v2.Z) <= threshold
+}

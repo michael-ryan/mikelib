@@ -131,3 +131,13 @@ func (v1 Vec2) LerpClamped(v2 Vec2, t float64) Vec2 {
 
 	return v1.Lerp(v2, t_clamped)
 }
+
+// Equals returns true if the two vectors are equal.
+func (v1 Vec2) Equals(v2 Vec2) bool {
+	return v1.X == v2.X && v1.Y == v2.Y
+}
+
+// AlmostEqual returns true if the two vectors are almost equal, within some tolerance threshold.
+func (v1 Vec2) AlmostEqual(v2 Vec2, threshold float64) bool {
+	return math.Abs(v1.X-v2.X) <= threshold && math.Abs(v1.Y-v2.Y) <= threshold
+}
