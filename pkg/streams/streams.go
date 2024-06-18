@@ -25,6 +25,7 @@ func Filter[T any](xs []T, predicate func(T) bool) []T {
 }
 
 // ToGenerator returns a channel that will produce all members of xs before closing.
+// The element at xs[0] will be the first element sent through the channel.
 //
 // This function performs the inverse operation of [Collect].
 func ToGenerator[T any](xs []T) <-chan T {
