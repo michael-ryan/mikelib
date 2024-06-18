@@ -53,6 +53,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
         WITH_V: true
+        DEFAULT_BUMP: patch
 
     - name: Create Release
-      run: go mod tidy; echo "${{ steps.tag-version.outputs.new_tag }}" #GOPROXY=proxy.golang.org go list -m github.com/michael-ryan/mikelib@
+      run: go mod tidy; GOPROXY=proxy.golang.org go list -m github.com/michael-ryan/mikelib@${{ steps.tag-version.outputs.new_tag }}
