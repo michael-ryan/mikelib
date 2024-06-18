@@ -13,7 +13,7 @@ func Map[T, U any](xs []T, f func(T) U) []U {
 
 // Filter applies a predicate to all members of xs, then returns a new slice containing only the members of xs such that predicate(x) = true.
 func Filter[T any](xs []T, predicate func(T) bool) []T {
-	var ys []T
+	ys := make([]T, 0)
 
 	for _, x := range xs {
 		if predicate(x) {
@@ -42,12 +42,13 @@ func ToGenerator[T any](xs []T) <-chan T {
 }
 
 // Collect returns a slice that contains all values produced by xs before closing.
+// The first element produced by the channel will be stored in index 0 of the slice.
 //
 // This function performs the inverse operation of [ToGenerator].
 //
 // Note that if xs never closes, this function will block indefinitely.
 func Collect[T any](xs <-chan T) []T {
-	var collected []T
+	collected := make([]T, 0)
 
 	for x := range xs {
 		collected = append(collected, x)
