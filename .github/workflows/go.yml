@@ -35,11 +35,11 @@ jobs:
   Release:
     needs: Test
     runs-on: ubuntu-latest
-    #if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     steps:
     - uses: actions/checkout@v4
       with:
-        #ref: ${{ github.event.pull_request.merge_commit_sha }}
+        ref: ${{ github.event.pull_request.merge_commit_sha }}
         fetch-depth: '0'
 
     - name: Set up Go
@@ -56,4 +56,4 @@ jobs:
         DEFAULT_BUMP: patch
 
     - name: Create Release
-      run: go mod tidy; GOPROXY=proxy.golang.org go list -m github.com/michael-ryan/mikelib@${{ steps.tag-version.outputs.new_tag }}
+      run: GOPROXY=proxy.golang.org go list -m github.com/michael-ryan/mikelib@${{ steps.tag-version.outputs.new_tag }}
