@@ -10,7 +10,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  TestAndRelease:
+  Test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -32,11 +32,27 @@ jobs:
         paths: report.xml            
       if: always()
 
-    # https://github.com/marketplace/actions/tag-version
-    - name: tag-version
-      uses: juliansangillo/tag-version@v1.5
+  Release:
+    needs: Test
+    runs-on: ubuntu-latest
+    #if: github.event.pull_request.merged == true
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        #ref: ${{ github.event.pull_request.merge_commit_sha }}
+        fetch-depth: '0'
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22.x'
+
+    - name: Github Tag Bump
+      uses: anothrNick/github-tag-action@1.67.0
       id: tag-version
-      if: github.event_name == 'push'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
 
     - name: Create Release
-      run: go mod tidy; echo "${{ steps.tag-version.outputs.revision }}" #GOPROXY=proxy.golang.org go list -m github.com/michael-ryan/mikelib@
+      run: go mod tidy; echo "${{ steps.tag-version.outputs.new_tag }}" #GOPROXY=proxy.golang.org go list -m github.com/michael-ryan/mikelib@
