@@ -50,11 +50,15 @@ func (v Vec2) Multiply(n float64) Vec2 {
 }
 
 // Divide returns this vector divided by a scalar value.
-func (v Vec2) Divide(n float64) Vec2 {
+func (v Vec2) Divide(n float64) (Vec2, error) {
+	if n == 0 {
+		return Vec2{}, errors.New("tried to divide by 0")
+	}
+
 	return NewVec2(
 		v.X/n,
 		v.Y/n,
-	)
+	), nil
 }
 
 // Magnitude returns the length of this vector.
@@ -138,6 +142,6 @@ func (v1 Vec2) Equals(v2 Vec2) bool {
 }
 
 // AlmostEqual returns true if the two vectors are almost equal, within some tolerance threshold.
-func (v1 Vec2) AlmostEqual(v2 Vec2, threshold float64) bool {
+func (v1 Vec2) AlmostEquals(v2 Vec2, threshold float64) bool {
 	return math.Abs(v1.X-v2.X) <= threshold && math.Abs(v1.Y-v2.Y) <= threshold
 }

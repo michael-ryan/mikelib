@@ -154,6 +154,6 @@ func (v1 Vec3) Equals(v2 Vec3) bool {
 }
 
 // AlmostEqual returns true if the two vectors are almost equal, within some tolerance threshold.
-func (v1 Vec3) AlmostEqual(v2 Vec3, threshold float64) bool {
+func (v1 Vec3) AlmostEquals(v2 Vec3, threshold float64) bool {
 	return math.Abs(v1.X-v2.X) <= threshold && math.Abs(v1.Y-v2.Y) <= threshold && math.Abs(v1.Z-v2.Z) <= threshold
 }
