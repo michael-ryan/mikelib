@@ -1,4 +1,4 @@
-# This workflow will build a golang project
+# This workflow will build and publish a golang project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
 name: Go
@@ -10,8 +10,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-
-  build:
+  TestAndRelease:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -32,3 +31,12 @@ jobs:
       with:
         paths: report.xml            
       if: always()
+
+    # https://github.com/marketplace/actions/tag-version
+    - name: tag-version
+      uses: juliansangillo/tag-version@v1.5
+      id: tag-version
+      if: github.event_name == 'push'
+
+    - name: Create Release
+      run: go mod tidy; echo "${{ steps.tag-version.outputs.revision }}" #GOPROXY=proxy.golang.org go list -m github.com/michael-ryan/mikelib@
