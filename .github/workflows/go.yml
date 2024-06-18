@@ -5,7 +5,7 @@ name: Go
 
 on:
   push:
-    branches: [ "master" ]
+    branches: "**"
   pull_request:
     branches: [ "master" ]
 
@@ -35,7 +35,7 @@ jobs:
   Release:
     needs: Test
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     steps:
     - uses: actions/checkout@v4
       with:
