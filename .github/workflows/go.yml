@@ -34,7 +34,7 @@ jobs:
     needs: Test
     name: Release
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v4
       with:
