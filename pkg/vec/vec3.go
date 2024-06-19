@@ -12,31 +12,22 @@ type Vec3 struct {
 	X, Y, Z float64
 }
 
-// NewVec3 returns a new 3D vector.
-func NewVec3(x, y, z float64) Vec3 {
-	return Vec3{
-		X: x,
-		Y: y,
-		Z: z,
-	}
-}
-
 // Add computes v1 + v2.
 func (v1 Vec3) Add(v2 Vec3) Vec3 {
-	return NewVec3(
-		v1.X+v2.X,
-		v1.Y+v2.Y,
-		v1.Z+v2.Z,
-	)
+	return Vec3{
+		v1.X + v2.X,
+		v1.Y + v2.Y,
+		v1.Z + v2.Z,
+	}
 }
 
 // Subtract computes v1 - v2.
 func (v1 Vec3) Subtract(v2 Vec3) Vec3 {
-	return NewVec3(
-		v1.X-v2.X,
-		v1.Y-v2.Y,
-		v1.Z-v2.Z,
-	)
+	return Vec3{
+		v1.X - v2.X,
+		v1.Y - v2.Y,
+		v1.Z - v2.Z,
+	}
 }
 
 // Dot computes the dot product between v1 and v2.
@@ -46,20 +37,20 @@ func (v1 Vec3) Dot(v2 Vec3) float64 {
 
 // Multiply returns this vector multiplied by a scalar value.
 func (v Vec3) Multiply(n float64) Vec3 {
-	return NewVec3(
-		v.X*n,
-		v.Y*n,
-		v.Z*n,
-	)
+	return Vec3{
+		v.X * n,
+		v.Y * n,
+		v.Z * n,
+	}
 }
 
 // Divide returns this vector divided by a scalar value.
 func (v Vec3) Divide(n float64) Vec3 {
-	return NewVec3(
-		v.X/n,
-		v.Y/n,
-		v.Z/n,
-	)
+	return Vec3{
+		v.X / n,
+		v.Y / n,
+		v.Z / n,
+	}
 }
 
 // Magnitude returns the length of this vector.
@@ -77,11 +68,11 @@ func (v Vec3) Normalised() (Vec3, error) {
 		return Vec3{}, errors.New("tried to normalise a 0-length vector")
 	}
 
-	return NewVec3(
-		v.X/magnitude,
-		v.Y/magnitude,
-		v.Z/magnitude,
-	), nil
+	return Vec3{
+		v.X / magnitude,
+		v.Y / magnitude,
+		v.Z / magnitude,
+	}, nil
 }
 
 // Angle computes the angle between v1 and v2, in radians.
@@ -111,11 +102,11 @@ func (v1 Vec3) Angle(v2 Vec3) (float64, error) {
 //
 // If you wish to have the result clamped between v1 and v2, use [LerpClamped].
 func (v1 Vec3) Lerp(v2 Vec3, t float64) Vec3 {
-	return NewVec3(
-		v1.X+t*(v2.X-v1.X),
-		v1.Y+t*(v2.Y-v1.Y),
-		v1.Z+t*(v2.Z-v1.Z),
-	)
+	return Vec3{
+		v1.X + t*(v2.X-v1.X),
+		v1.Y + t*(v2.Y-v1.Y),
+		v1.Z + t*(v2.Z-v1.Z),
+	}
 }
 
 // LerpClamped linearly interpolates between v1 and v2 by factor t, clamping the result between v1 and v2.
@@ -141,11 +132,11 @@ func (v1 Vec3) LerpClamped(v2 Vec3, t float64) Vec3 {
 
 // Cross returns the cross product of v1 and v2.
 func (v1 Vec3) Cross(v2 Vec3) Vec3 {
-	return NewVec3(
-		v1.Y*v2.Z-v1.Z*v2.Y,
-		v1.Z*v2.X-v1.X*v2.Z,
-		v1.X*v2.Y-v1.Y*v2.X,
-	)
+	return Vec3{
+		v1.Y*v2.Z - v1.Z*v2.Y,
+		v1.Z*v2.X - v1.X*v2.Z,
+		v1.X*v2.Y - v1.Y*v2.X,
+	}
 }
 
 // Equals returns true if the two vectors are equal.
