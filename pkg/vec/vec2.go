@@ -12,28 +12,20 @@ type Vec2 struct {
 	X, Y float64
 }
 
-// NewVec2 returns a new 2D vector.
-func NewVec2(x, y float64) Vec2 {
-	return Vec2{
-		X: x,
-		Y: y,
-	}
-}
-
 // Add computes v1 + v2.
 func (v1 Vec2) Add(v2 Vec2) Vec2 {
-	return NewVec2(
-		v1.X+v2.X,
-		v1.Y+v2.Y,
-	)
+	return Vec2{
+		v1.X + v2.X,
+		v1.Y + v2.Y,
+	}
 }
 
 // Subtract computes v1 - v2.
 func (v1 Vec2) Subtract(v2 Vec2) Vec2 {
-	return NewVec2(
-		v1.X-v2.X,
-		v1.Y-v2.Y,
-	)
+	return Vec2{
+		v1.X - v2.X,
+		v1.Y - v2.Y,
+	}
 }
 
 // Dot computes the dot product between v1 and v2.
@@ -43,10 +35,10 @@ func (v1 Vec2) Dot(v2 Vec2) float64 {
 
 // Multiply returns this vector multiplied by a scalar value.
 func (v Vec2) Multiply(n float64) Vec2 {
-	return NewVec2(
-		v.X*n,
-		v.Y*n,
-	)
+	return Vec2{
+		v.X * n,
+		v.Y * n,
+	}
 }
 
 // Divide returns this vector divided by a scalar value.
@@ -55,10 +47,10 @@ func (v Vec2) Divide(n float64) (Vec2, error) {
 		return Vec2{}, errors.New("tried to divide by 0")
 	}
 
-	return NewVec2(
-		v.X/n,
-		v.Y/n,
-	), nil
+	return Vec2{
+		v.X / n,
+		v.Y / n,
+	}, nil
 }
 
 // Magnitude returns the length of this vector.
@@ -76,10 +68,10 @@ func (v Vec2) Normalised() (Vec2, error) {
 		return Vec2{}, errors.New("tried to normalise a 0-length vector")
 	}
 
-	return NewVec2(
-		v.X/magnitude,
-		v.Y/magnitude,
-	), nil
+	return Vec2{
+		v.X / magnitude,
+		v.Y / magnitude,
+	}, nil
 }
 
 // Angle computes the angle between v1 and v2, in radians.
@@ -109,10 +101,10 @@ func (v1 Vec2) Angle(v2 Vec2) (float64, error) {
 //
 // If you wish to have the result clamped between v1 and v2, use [LerpClamped].
 func (v1 Vec2) Lerp(v2 Vec2, t float64) Vec2 {
-	return NewVec2(
-		v1.X+t*(v2.X-v1.X),
-		v1.Y+t*(v2.Y-v1.Y),
-	)
+	return Vec2{
+		v1.X + t*(v2.X-v1.X),
+		v1.Y + t*(v2.Y-v1.Y),
+	}
 }
 
 // LerpClamped linearly interpolates between v1 and v2 by factor t, clamping the result between v1 and v2.

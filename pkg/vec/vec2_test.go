@@ -5,41 +5,6 @@ import (
 	"testing"
 )
 
-func TestNewVec2(t *testing.T) {
-	tests := []struct {
-		name string
-		x    float64
-		y    float64
-		want Vec2
-	}{
-		{
-			name: "(0,0)",
-			x:    0,
-			y:    0,
-			want: Vec2{0, 0},
-		},
-		{
-			name: "(1,2)",
-			x:    1,
-			y:    2,
-			want: Vec2{1, 2},
-		},
-		{
-			name: "(3.0134,-4.2162)",
-			x:    3.0134,
-			y:    -4.2162,
-			want: Vec2{3.0134, -4.2162},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewVec2(tt.x, tt.y); !got.Equals(tt.want) {
-				t.Errorf("NewVec2() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestVec2_Add(t *testing.T) {
 	tests := []struct {
 		name string
