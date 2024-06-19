@@ -20,7 +20,7 @@ jobs:
       run: go install github.com/jstemmer/go-junit-report@latest
 
     - name: Test
-      run: go test -v 2>&1 ./... | go-junit-report -set-exit-code > report.xml
+      run: for i in ./*; do (cd "$i"; go test -v 2>&1 ./...); done | go-junit-report -set-exit-code > report.xml
 
     - name: Publish test Summary
       uses: test-summary/action@v2
