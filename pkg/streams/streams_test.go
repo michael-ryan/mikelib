@@ -1,6 +1,7 @@
 package streams
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -176,6 +177,80 @@ func TestCollect(t *testing.T) {
 			if got := Collect(c); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Collect() = %v, want %v", got, tt.want)
 			}
+		})
+	}
+}
+
+func TestFold(t *testing.T) {
+	type args struct {
+		xs           []int
+		folder       func(int, int) int
+		initialValue int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "1..5 + 0",
+			args: args{
+				xs:           []int{1, 2, 3, 4, 5},
+				folder:       func(x, y int) int { return x + y },
+				initialValue: 0,
+			},
+			want: 15,
+		},
+		{
+			name: "1..5 * 1",
+			args: args{
+				xs:           []int{1, 2, 3, 4, 5},
+				folder:       func(x, y int) int { return x * y },
+				initialValue: 1,
+			},
+			want: 120,
+		},
+		{
+			name: "1..5 * 2",
+			args: args{
+				xs:           []int{1, 2, 3, 4, 5},
+				folder:       func(x, y int) int { return x * y },
+				initialValue: 2,
+			},
+			want: 240,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Fold(tt.args.xs, tt.args.folder, tt.args.initialValue); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Fold() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+// Don't really want to bother with mocking as we are just looking for side effects here
+// Keep this test here to catch runtime errors.
+func TestForeach(t *testing.T) {
+	type args struct {
+		xs []int
+		f  func(int)
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "Sprint 1..5",
+			args: args{
+				xs: []int{1, 2, 3, 4, 5},
+				f:  func(i int) { fmt.Sprintln(i) },
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			Foreach(tt.args.xs, tt.args.f)
 		})
 	}
 }

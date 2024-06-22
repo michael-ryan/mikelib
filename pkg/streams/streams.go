@@ -56,3 +56,20 @@ func Collect[T any](xs <-chan T) []T {
 
 	return collected
 }
+
+// Fold collapses a slice into a single value, using a given folder function.
+//
+// The folder function should take two arguments: the accumulator and the current value.
+func Fold[T, U any](xs []T, folder func(U, T) U, initialValue U) U {
+	for _, x := range xs {
+		initialValue = folder(initialValue, x)
+	}
+	return initialValue
+}
+
+// Foreach applies a function f to all members of xs.
+func Foreach[T any](xs []T, f func(T)) {
+	for _, x := range xs {
+		f(x)
+	}
+}

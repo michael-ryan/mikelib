@@ -6,7 +6,7 @@ import (
 )
 
 // Vec3 represents a vector in 3D space.
-// Many receivers are provided - note these are value receivers,
+// Many methods are provided - note these are value receivers,
 // and therefore never modify the Vec3 being operated upon.
 type Vec3 struct {
 	X, Y, Z float64
