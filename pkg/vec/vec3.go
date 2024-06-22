@@ -45,12 +45,16 @@ func (v Vec3) Multiply(n float64) Vec3 {
 }
 
 // Divide returns this vector divided by a scalar value.
-func (v Vec3) Divide(n float64) Vec3 {
+func (v Vec3) Divide(n float64) (Vec3, error) {
+	if n == 0 {
+		return Vec3{}, errors.New("tried to divide by 0")
+	}
+
 	return Vec3{
 		v.X / n,
 		v.Y / n,
 		v.Z / n,
-	}
+	}, nil
 }
 
 // Magnitude returns the length of this vector.
