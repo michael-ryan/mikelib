@@ -6,7 +6,7 @@ import (
 )
 
 // Vec2 represents a vector in 2D space.
-// Many receivers are provided - note these are value receivers,
+// Many methods are provided - note these are value receivers,
 // and therefore never modify the Vec2 being operated upon.
 type Vec2 struct {
 	X, Y float64
